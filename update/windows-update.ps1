@@ -14,6 +14,7 @@
 #     at https://msdn.microsoft.com/en-us/library/windows/desktop/aa386099(v=vs.85).aspx
 
 param(
+    [string[]]$Filters = @('include:$_.AutoSelectOnWebSites'),
     [int]$UpdateLimit = 100
 )
 
@@ -108,6 +109,26 @@ function ExitWhenRebootRequired($rebootRequired = $false) {
 
 ExitWhenRebootRequired
 
+$updateFilters = $Filters | ForEach-Object {
+    $action, $expression = $_ -split ':',2
+    New-Object PSObject -Property @{
+        Action = $action
+        Expression = [ScriptBlock]::Create($expression)
+    }
+}
+
+function Test-IncludeUpdate($filters, $update) {
+    foreach ($filter in $filters) {
+        if (Where-Object -InputObject $update $filter.Expression) {
+            if ($filter.Action -eq 'include') {
+                return $true
+            }
+            return $false
+        }
+    }
+    return $false
+}
+
 $updateSession = New-Object -ComObject 'Microsoft.Update.Session'
 $updateSession.ClientApplicationID = 'packer-windows-update'
 
@@ -124,7 +145,7 @@ for ($i = 0; $i -lt $searchResult.Updates.Count; ++$i) {
         continue
     }
 
-    if (!$update.AutoSelectOnWebSites) {
+    if (!(Test-IncludeUpdate $updateFilters $update)) {
         continue
     }
 
