@@ -4,7 +4,7 @@
 
 This is a Packer plugin for installing Windows updates (akin to [rgl/vagrant-windows-update](https://github.com/rgl/vagrant-windows-update)).
 
-**NB** This was only tested with Packer 1.14.1 and the images at [rgl/windows-vagrant](https://github.com/rgl/windows-vagrant), so YMMV.
+**NB** This was only tested with Packer 1.16.1 and the images at [rgl/windows-vagrant](https://github.com/rgl/windows-vagrant), so YMMV.
 
 # Usage
 
@@ -104,7 +104,7 @@ Install the dependencies:
 * [Docker](https://docs.docker.com/engine/install/).
 * [Visual Studio Code](https://code.visualstudio.com).
 * [Dev Container plugin](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers).
-* [`windows-2022-amd64` vagrant box](https://github.com/rgl/windows-vagrant).
+* [`windows-2025-amd64` vagrant box](https://github.com/rgl/windows-vagrant).
 
 Open this directory with the Dev Container plugin.
 
